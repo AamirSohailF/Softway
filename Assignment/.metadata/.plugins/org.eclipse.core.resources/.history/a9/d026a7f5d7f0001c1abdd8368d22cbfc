@@ -1,0 +1,66 @@
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+
+public class Exercise {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+	
+		
+		String chromeKey = "webdriver.chrome.driver";
+		String chromeDriverPath = "./drivers/chromedriver.exe";
+		
+		System.setProperty(chromeKey, chromeDriverPath);
+		
+		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver.get("https://www.flipkart.com/");
+		
+		
+		driver.findElement(By.xpath("//button[text()='✕']")).click();
+		driver.findElement(By.xpath("//input[@placeholder='Search for products, brands and more']")).sendKeys("iPhone");
+		driver.findElement(By.xpath("//button[@type='submit']")).click();
+		List<WebElement> phones = driver.findElements(By.xpath("//div[contains(text(), \"APPLE iPhone\")]"));
+		
+		WebElement FirstPhone = phones.get(0);
+		FirstPhone.click();
+		Thread.sleep(5);
+		Actions action = new Actions(driver);
+		action.keyDown(Keys.CONTROL);
+		action.keyDown(Keys.TAB);
+		
+		action.keyUp(Keys.CONTROL);
+		action.keyUp(Keys.TAB);
+		
+		String PhoneValue = driver.findElement(By.xpath("//div[@class='_30jeq3 _16Jk6d']")).getText();
+		
+		System.out.println("Phone's value is Rs." + PhoneValue);
+		driver.findElement(By.xpath("//button[text()='GO TO CART']")).click();
+		Thread.sleep(3);
+		driver.findElement(By.xpath("//button[text()='+']")).click();
+		
+		String PriceBeforeAdding = driver.findElement(By.xpath("(//div/span)[22]")).getText();
+		String PriceAfterAdding = driver.findElement(By.xpath("(//div/span)[10]")).getText();
+		
+		
+		System.out.println("Price of 1 item: " + PriceBeforeAdding);
+		System.out.println("Price after increasing item quantity by 1: " + PriceAfterAdding);
+		
+		Thread.sleep(1);
+		
+		driver.close();
+		
+		
+		
+	}
+
+}
